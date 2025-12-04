@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { Scissors, Mail, Lock, User, Loader2 } from 'lucide-react';
+import { WashingMachine, Mail, Lock, User, Loader2 } from 'lucide-react';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -112,7 +112,7 @@ export default function Auth() {
     } else {
       toast({
         title: 'Account Created!',
-        description: 'Welcome to BarberShop Pro.',
+        description: 'Welcome to FreshWash Laundry.',
       });
     }
   };
@@ -126,21 +126,21 @@ export default function Auth() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-50 via-blue-50 to-white dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-cyan-400/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl" />
       </div>
 
       <Card className="w-full max-w-md glass-card animate-fade-in relative z-10">
         <CardHeader className="text-center space-y-4">
-          <div className="mx-auto w-16 h-16 rounded-2xl gold-gradient flex items-center justify-center shadow-lg shadow-primary/30">
-            <Scissors className="h-8 w-8 text-primary-foreground" />
+          <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/30">
+            <WashingMachine className="h-8 w-8 text-white" />
           </div>
           <div>
-            <CardTitle className="text-3xl font-display gold-text">BarberShop Pro</CardTitle>
+            <CardTitle className="text-3xl font-bold gradient-text">FreshWash</CardTitle>
             <CardDescription className="text-muted-foreground">
-              Book your next grooming session
+              Professional Laundry Services
             </CardDescription>
           </div>
         </CardHeader>
@@ -164,7 +164,7 @@ export default function Auth() {
                       placeholder="your@email.com"
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
-                      className="pl-10 bg-secondary border-border"
+                      className="pl-10 bg-background border-border"
                     />
                   </div>
                   {errors.login_email && (
@@ -182,7 +182,7 @@ export default function Auth() {
                       placeholder="••••••••"
                       value={loginPassword}
                       onChange={(e) => setLoginPassword(e.target.value)}
-                      className="pl-10 bg-secondary border-border"
+                      className="pl-10 bg-background border-border"
                     />
                   </div>
                   {errors.login_password && (
@@ -190,7 +190,7 @@ export default function Auth() {
                   )}
                 </div>
 
-                <Button type="submit" className="w-full" variant="gold" disabled={isLoading}>
+                <Button type="submit" className="w-full" variant="gradient" disabled={isLoading}>
                   {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Sign In'}
                 </Button>
               </form>
@@ -208,7 +208,7 @@ export default function Auth() {
                       placeholder="John Doe"
                       value={signupName}
                       onChange={(e) => setSignupName(e.target.value)}
-                      className="pl-10 bg-secondary border-border"
+                      className="pl-10 bg-background border-border"
                     />
                   </div>
                   {errors.signup_fullName && (
@@ -226,7 +226,7 @@ export default function Auth() {
                       placeholder="your@email.com"
                       value={signupEmail}
                       onChange={(e) => setSignupEmail(e.target.value)}
-                      className="pl-10 bg-secondary border-border"
+                      className="pl-10 bg-background border-border"
                     />
                   </div>
                   {errors.signup_email && (
@@ -244,7 +244,7 @@ export default function Auth() {
                       placeholder="••••••••"
                       value={signupPassword}
                       onChange={(e) => setSignupPassword(e.target.value)}
-                      className="pl-10 bg-secondary border-border"
+                      className="pl-10 bg-background border-border"
                     />
                   </div>
                   {errors.signup_password && (
@@ -252,7 +252,7 @@ export default function Auth() {
                   )}
                 </div>
 
-                <Button type="submit" className="w-full" variant="gold" disabled={isLoading}>
+                <Button type="submit" className="w-full" variant="gradient" disabled={isLoading}>
                   {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Create Account'}
                 </Button>
               </form>

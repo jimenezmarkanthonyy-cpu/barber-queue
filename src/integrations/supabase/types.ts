@@ -46,7 +46,7 @@ export type Database = {
           payment_method: Database["public"]["Enums"]["payment_method"]
           payment_status?: Database["public"]["Enums"]["payment_status"]
           queue_number?: number | null
-          service_type: Database["public"]["Enums"]["service_type"]
+          service_type?: Database["public"]["Enums"]["service_type"]
           total_cost: number
           updated_at?: string
           user_id: string
@@ -188,12 +188,13 @@ export type Database = {
       payment_method: "gcash" | "cash" | "card"
       payment_status: "pending" | "paid" | "refunded"
       service_type:
-        | "basic_haircut"
-        | "premium_haircut"
-        | "beard_trim"
-        | "shave"
-        | "hair_color"
-        | "styling"
+        | "wash_fold"
+        | "dry_clean"
+        | "ironing"
+        | "wash_only"
+        | "dry_only"
+        | "express"
+        | "bedding"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -332,12 +333,13 @@ export const Constants = {
       payment_method: ["gcash", "cash", "card"],
       payment_status: ["pending", "paid", "refunded"],
       service_type: [
-        "basic_haircut",
-        "premium_haircut",
-        "beard_trim",
-        "shave",
-        "hair_color",
-        "styling",
+        "wash_fold",
+        "dry_clean",
+        "ironing",
+        "wash_only",
+        "dry_only",
+        "express",
+        "bedding",
       ],
     },
   },

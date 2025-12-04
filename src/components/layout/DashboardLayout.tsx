@@ -6,7 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import {
-  Scissors,
+  WashingMachine,
   Calendar,
   ClipboardList,
   Users,
@@ -25,17 +25,17 @@ interface NavItem {
 }
 
 const customerNavItems: NavItem[] = [
-  { title: 'Book Appointment', href: '/dashboard', icon: <Calendar className="h-5 w-5" /> },
-  { title: 'My Appointments', href: '/dashboard/appointments', icon: <ClipboardList className="h-5 w-5" /> },
+  { title: 'New Order', href: '/dashboard', icon: <Calendar className="h-5 w-5" /> },
+  { title: 'My Orders', href: '/dashboard/orders', icon: <ClipboardList className="h-5 w-5" /> },
   { title: 'Queue Status', href: '/dashboard/queue', icon: <Users className="h-5 w-5" /> },
 ];
 
 const adminNavItems: NavItem[] = [
-  { title: 'All Bookings', href: '/admin', icon: <LayoutDashboard className="h-5 w-5" /> },
+  { title: 'All Orders', href: '/admin', icon: <LayoutDashboard className="h-5 w-5" /> },
   { title: 'Queue Management', href: '/admin/queue', icon: <Users className="h-5 w-5" /> },
   { title: 'Analytics', href: '/admin/analytics', icon: <BarChart3 className="h-5 w-5" /> },
-  { title: 'User Management', href: '/admin/users', icon: <ClipboardList className="h-5 w-5" /> },
-  { title: 'Branch Management', href: '/admin/branches', icon: <Building2 className="h-5 w-5" /> },
+  { title: 'Customers', href: '/admin/users', icon: <ClipboardList className="h-5 w-5" /> },
+  { title: 'Branches', href: '/admin/branches', icon: <Building2 className="h-5 w-5" /> },
 ];
 
 interface DashboardLayoutProps {
@@ -61,11 +61,11 @@ export function DashboardLayout({ children, variant = 'customer' }: DashboardLay
       {/* Logo */}
       <div className="p-6 border-b border-sidebar-border">
         <Link to={variant === 'admin' ? '/admin' : '/dashboard'} className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl gold-gradient flex items-center justify-center shadow-lg shadow-primary/20">
-            <Scissors className="h-5 w-5 text-primary-foreground" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+            <WashingMachine className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h1 className="font-display text-lg font-semibold gold-text">BarberShop</h1>
+            <h1 className="font-semibold text-lg gradient-text">FreshWash</h1>
             <p className="text-xs text-muted-foreground capitalize">{variant} Panel</p>
           </div>
         </Link>
@@ -126,10 +126,10 @@ export function DashboardLayout({ children, variant = 'customer' }: DashboardLay
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-sidebar/95 backdrop-blur-xl border-b border-sidebar-border">
         <div className="flex items-center justify-between p-4">
           <Link to={variant === 'admin' ? '/admin' : '/dashboard'} className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl gold-gradient flex items-center justify-center">
-              <Scissors className="h-4 w-4 text-primary-foreground" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
+              <WashingMachine className="h-4 w-4 text-white" />
             </div>
-            <span className="font-display font-semibold gold-text">BarberShop</span>
+            <span className="font-semibold gradient-text">FreshWash</span>
           </Link>
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>

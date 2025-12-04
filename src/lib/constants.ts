@@ -1,39 +1,52 @@
 export const SERVICE_CONFIG = {
-  basic_haircut: {
-    name: 'Basic Haircut',
+  wash_fold: {
+    name: 'Wash & Fold',
+    price: 60,
+    duration: 120,
+    icon: 'Shirt',
+    unit: 'per kg',
+  },
+  dry_clean: {
+    name: 'Dry Cleaning',
     price: 150,
-    duration: 30,
-    icon: 'Scissors',
-  },
-  premium_haircut: {
-    name: 'Premium Haircut',
-    price: 250,
-    duration: 45,
-    icon: 'Crown',
-  },
-  beard_trim: {
-    name: 'Beard Trim',
-    price: 100,
-    duration: 20,
+    duration: 180,
     icon: 'Sparkles',
+    unit: 'per piece',
   },
-  shave: {
-    name: 'Shave',
-    price: 120,
-    duration: 25,
-    icon: 'Slash',
+  ironing: {
+    name: 'Ironing/Pressing',
+    price: 30,
+    duration: 60,
+    icon: 'Flame',
+    unit: 'per piece',
   },
-  hair_color: {
-    name: 'Hair Color',
-    price: 500,
+  wash_only: {
+    name: 'Wash Only',
+    price: 40,
     duration: 90,
-    icon: 'Palette',
+    icon: 'Droplets',
+    unit: 'per kg',
   },
-  styling: {
-    name: 'Styling',
-    price: 200,
-    duration: 40,
-    icon: 'Wand2',
+  dry_only: {
+    name: 'Dry Only',
+    price: 35,
+    duration: 60,
+    icon: 'Wind',
+    unit: 'per kg',
+  },
+  express: {
+    name: 'Express Service',
+    price: 100,
+    duration: 60,
+    icon: 'Zap',
+    unit: 'per kg',
+  },
+  bedding: {
+    name: 'Bedding/Comforter',
+    price: 250,
+    duration: 240,
+    icon: 'BedDouble',
+    unit: 'per piece',
   },
 } as const;
 
@@ -58,8 +71,9 @@ export const BOOKING_STATUS_CONFIG = {
 export type BookingStatus = keyof typeof BOOKING_STATUS_CONFIG;
 
 export const TIME_SLOTS = [
-  '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
-  '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
-  '15:00', '15:30', '16:00', '16:30', '17:00', '17:30',
-  '18:00', '18:30', '19:00', '19:30', '20:00',
+  '07:00', '07:30', '08:00', '08:30', '09:00', '09:30',
+  '10:00', '10:30', '11:00', '11:30', '12:00', '12:30',
+  '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
+  '16:00', '16:30', '17:00', '17:30', '18:00', '18:30',
+  '19:00', '19:30', '20:00',
 ];

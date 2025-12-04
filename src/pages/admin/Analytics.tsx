@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { format, subDays, startOfMonth, endOfMonth } from 'date-fns';
+import { format, startOfMonth, endOfMonth } from 'date-fns';
 import { supabase } from '@/integrations/supabase/client';
 import { SERVICE_CONFIG, ServiceType } from '@/lib/constants';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -23,10 +23,10 @@ import {
   TrendingUp,
   DollarSign,
   Calendar,
-  Users,
+  Package,
 } from 'lucide-react';
 
-const COLORS = ['#d4af37', '#f59e0b', '#22c55e', '#3b82f6', '#a855f7', '#ef4444'];
+const COLORS = ['#06b6d4', '#3b82f6', '#22c55e', '#f59e0b', '#a855f7', '#ef4444', '#ec4899'];
 
 export default function Analytics() {
   const currentMonth = {
@@ -111,7 +111,7 @@ export default function Analytics() {
     <DashboardLayout variant="admin">
       <div className="p-6 lg:p-8">
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-3xl font-display font-bold gold-text">Analytics</h1>
+          <h1 className="text-3xl font-bold gradient-text">Analytics</h1>
           <p className="text-muted-foreground mt-2">Business insights for {format(new Date(), 'MMMM yyyy')}</p>
         </div>
 
@@ -120,12 +120,12 @@ export default function Analytics() {
           <Card className="glass-card animate-fade-in" style={{ animationDelay: '0.1s' }}>
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-success/20 flex items-center justify-center">
-                  <DollarSign className="h-6 w-6 text-success" />
+                <div className="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                  <DollarSign className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Total Revenue</p>
-                  <p className="text-2xl font-bold text-success">₱{totalRevenue.toLocaleString()}</p>
+                  <p className="text-2xl font-bold text-green-600">₱{totalRevenue.toLocaleString()}</p>
                 </div>
               </div>
             </CardContent>
@@ -134,11 +134,11 @@ export default function Analytics() {
           <Card className="glass-card animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
                   <Calendar className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Bookings</p>
+                  <p className="text-sm text-muted-foreground">Total Orders</p>
                   <p className="text-2xl font-bold">{totalBookings}</p>
                 </div>
               </div>
@@ -148,8 +148,8 @@ export default function Analytics() {
           <Card className="glass-card animate-fade-in" style={{ animationDelay: '0.3s' }}>
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
-                  <Users className="h-6 w-6 text-blue-400" />
+                <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                  <Package className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Completed</p>
@@ -162,11 +162,11 @@ export default function Analytics() {
           <Card className="glass-card animate-fade-in" style={{ animationDelay: '0.4s' }}>
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-warning/20 flex items-center justify-center">
-                  <TrendingUp className="h-6 w-6 text-warning" />
+                <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                  <TrendingUp className="h-6 w-6 text-amber-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Avg. Booking</p>
+                  <p className="text-sm text-muted-foreground">Avg. Order</p>
                   <p className="text-2xl font-bold">
                     ₱{totalBookings > 0 ? Math.round(totalRevenue / totalBookings).toLocaleString() : 0}
                   </p>
@@ -203,9 +203,9 @@ export default function Analytics() {
                     <Line
                       type="monotone"
                       dataKey="revenue"
-                      stroke="hsl(var(--primary))"
+                      stroke="#06b6d4"
                       strokeWidth={2}
-                      dot={{ fill: 'hsl(var(--primary))' }}
+                      dot={{ fill: '#06b6d4' }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -213,10 +213,10 @@ export default function Analytics() {
             </CardContent>
           </Card>
 
-          {/* Bookings by Service */}
+          {/* Orders by Service */}
           <Card className="glass-card animate-fade-in" style={{ animationDelay: '0.6s' }}>
             <CardHeader>
-              <CardTitle>Bookings by Service</CardTitle>
+              <CardTitle>Orders by Service</CardTitle>
               <CardDescription>Service popularity breakdown</CardDescription>
             </CardHeader>
             <CardContent>
@@ -262,10 +262,10 @@ export default function Analytics() {
             </CardContent>
           </Card>
 
-          {/* Bookings by Branch */}
+          {/* Orders by Branch */}
           <Card className="glass-card animate-fade-in" style={{ animationDelay: '0.7s' }}>
             <CardHeader>
-              <CardTitle>Bookings by Branch</CardTitle>
+              <CardTitle>Orders by Branch</CardTitle>
               <CardDescription>Branch performance comparison</CardDescription>
             </CardHeader>
             <CardContent>
@@ -284,7 +284,7 @@ export default function Analytics() {
                         borderRadius: '8px',
                       }}
                     />
-                    <Bar dataKey="bookings" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="bookings" fill="#06b6d4" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               )}

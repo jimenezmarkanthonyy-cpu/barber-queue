@@ -11,25 +11,27 @@ import {
   Calendar,
   Clock,
   MapPin,
-  Users,
+  Package,
   Hash,
   FileText,
-  Scissors,
-  Crown,
+  Shirt,
   Sparkles,
-  Slash,
-  Palette,
-  Wand2,
-  CalendarX,
+  Flame,
+  Droplets,
+  Wind,
+  Zap,
+  BedDouble,
+  ClipboardList,
 } from 'lucide-react';
 
 const serviceIcons: Record<ServiceType, React.ReactNode> = {
-  basic_haircut: <Scissors className="h-5 w-5" />,
-  premium_haircut: <Crown className="h-5 w-5" />,
-  beard_trim: <Sparkles className="h-5 w-5" />,
-  shave: <Slash className="h-5 w-5" />,
-  hair_color: <Palette className="h-5 w-5" />,
-  styling: <Wand2 className="h-5 w-5" />,
+  wash_fold: <Shirt className="h-5 w-5" />,
+  dry_clean: <Sparkles className="h-5 w-5" />,
+  ironing: <Flame className="h-5 w-5" />,
+  wash_only: <Droplets className="h-5 w-5" />,
+  dry_only: <Wind className="h-5 w-5" />,
+  express: <Zap className="h-5 w-5" />,
+  bedding: <BedDouble className="h-5 w-5" />,
 };
 
 export default function MyAppointments() {
@@ -57,8 +59,8 @@ export default function MyAppointments() {
     <DashboardLayout variant="customer">
       <div className="p-6 lg:p-8 max-w-4xl mx-auto">
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-3xl font-display font-bold gold-text">My Appointments</h1>
-          <p className="text-muted-foreground mt-2">View your past and upcoming appointments</p>
+          <h1 className="text-3xl font-bold gradient-text">My Orders</h1>
+          <p className="text-muted-foreground mt-2">Track your laundry orders</p>
         </div>
 
         {isLoading ? (
@@ -101,14 +103,14 @@ export default function MyAppointments() {
                       <div className="flex-1 space-y-3">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                           <div>
-                            <h3 className="font-semibold text-lg">{service.name}</h3>
+                            <h3 className="font-semibold text-lg">{service?.name || booking.service_type}</h3>
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                               <MapPin className="h-4 w-4" />
                               <span>{booking.branch?.name}</span>
                             </div>
                           </div>
                           <Badge variant={booking.booking_status as BookingStatus}>
-                            {status.label}
+                            {status?.label || booking.booking_status}
                           </Badge>
                         </div>
 
@@ -122,8 +124,8 @@ export default function MyAppointments() {
                             <span>{booking.booking_time}</span>
                           </div>
                           <div className="flex items-center gap-2 text-muted-foreground">
-                            <Users className="h-4 w-4" />
-                            <span>{booking.number_of_pax} {booking.number_of_pax === 1 ? 'person' : 'people'}</span>
+                            <Package className="h-4 w-4" />
+                            <span>{booking.number_of_pax} {service?.unit === 'per kg' ? 'kg' : 'pcs'}</span>
                           </div>
                           {booking.queue_number && (
                             <div className="flex items-center gap-2 text-primary">
@@ -142,7 +144,7 @@ export default function MyAppointments() {
 
                         <div className="pt-2 border-t border-border">
                           <p className="text-sm text-muted-foreground">Total Cost</p>
-                          <p className="text-xl font-bold text-success">
+                          <p className="text-xl font-bold text-green-600">
                             ₱{Number(booking.total_cost).toLocaleString()}
                           </p>
                         </div>
@@ -157,11 +159,11 @@ export default function MyAppointments() {
           <Card className="glass-card animate-fade-in">
             <CardContent className="py-16 text-center">
               <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
-                <CalendarX className="h-8 w-8 text-muted-foreground" />
+                <ClipboardList className="h-8 w-8 text-muted-foreground" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">No Appointments Yet</h3>
+              <h3 className="text-lg font-semibold mb-2">No Orders Yet</h3>
               <p className="text-muted-foreground">
-                You haven't booked any appointments. Book your first grooming session today!
+                You haven't placed any laundry orders yet. Start your first order today!
               </p>
             </CardContent>
           </Card>

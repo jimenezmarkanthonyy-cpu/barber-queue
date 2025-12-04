@@ -15,6 +15,7 @@ import {
   Hash,
   Users,
   Zap,
+  WashingMachine,
 } from 'lucide-react';
 
 export default function QueueStatus() {
@@ -75,8 +76,8 @@ export default function QueueStatus() {
     <DashboardLayout variant="customer">
       <div className="p-6 lg:p-8 max-w-4xl mx-auto">
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-3xl font-display font-bold gold-text">Queue Status</h1>
-          <p className="text-muted-foreground mt-2">Real-time queue updates for today</p>
+          <h1 className="text-3xl font-bold gradient-text">Queue Status</h1>
+          <p className="text-muted-foreground mt-2">Real-time order tracking for today</p>
         </div>
 
         {/* My Position */}
@@ -84,20 +85,20 @@ export default function QueueStatus() {
           <Card className="glass-card border-primary mb-6 animate-fade-in">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Zap className="h-5 w-5 text-primary" />
-                Your Queue Position
+                <WashingMachine className="h-5 w-5 text-primary" />
+                Your Order Status
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-6">
-                <div className="w-20 h-20 rounded-2xl gold-gradient flex items-center justify-center animate-pulse-gold">
-                  <span className="text-3xl font-bold text-primary-foreground">
+                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center shadow-lg">
+                  <span className="text-3xl font-bold text-white">
                     #{myBooking.queue_number}
                   </span>
                 </div>
                 <div>
                   <p className="font-semibold text-lg">
-                    {SERVICE_CONFIG[myBooking.service_type as ServiceType].name}
+                    {SERVICE_CONFIG[myBooking.service_type as ServiceType]?.name || myBooking.service_type}
                   </p>
                   <p className="text-muted-foreground flex items-center gap-2">
                     <Clock className="h-4 w-4" />
@@ -111,7 +112,7 @@ export default function QueueStatus() {
                     variant={myBooking.booking_status === 'in_progress' ? 'in_progress' : 'confirmed'}
                     className="mt-2"
                   >
-                    {myBooking.booking_status === 'in_progress' ? 'Now Serving' : 'Waiting'}
+                    {myBooking.booking_status === 'in_progress' ? 'Processing Now' : 'In Queue'}
                   </Badge>
                 </div>
               </div>
@@ -119,22 +120,22 @@ export default function QueueStatus() {
           </Card>
         )}
 
-        {/* Now Serving */}
+        {/* Now Processing */}
         {nowServing && (
-          <Card className="glass-card border-success/50 mb-6 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          <Card className="glass-card border-green-500/50 mb-6 animate-fade-in" style={{ animationDelay: '0.1s' }}>
             <CardHeader className="pb-4">
-              <CardTitle className="text-lg flex items-center gap-2 text-success">
+              <CardTitle className="text-lg flex items-center gap-2 text-green-600">
                 <Zap className="h-5 w-5" />
-                Now Serving
+                Now Processing
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-xl bg-success/20 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-success">#{nowServing.queue_number}</span>
+                <div className="w-16 h-16 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-green-600">#{nowServing.queue_number}</span>
                 </div>
                 <div>
-                  <p className="font-semibold">{SERVICE_CONFIG[nowServing.service_type as ServiceType].name}</p>
+                  <p className="font-semibold">{SERVICE_CONFIG[nowServing.service_type as ServiceType]?.name}</p>
                   <p className="text-sm text-muted-foreground">{nowServing.branch?.name}</p>
                 </div>
               </div>
@@ -150,7 +151,7 @@ export default function QueueStatus() {
               Today's Queue
             </CardTitle>
             <CardDescription>
-              {waiting?.length || 0} {(waiting?.length || 0) === 1 ? 'person' : 'people'} waiting
+              {waiting?.length || 0} orders waiting
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -168,7 +169,7 @@ export default function QueueStatus() {
               </div>
             ) : queueData && queueData.length > 0 ? (
               <div className="space-y-3">
-                {queueData.map((item, index) => {
+                {queueData.map((item) => {
                   const isMyBooking = item.user_id === profile?.id;
                   const isServing = item.booking_status === 'in_progress';
 
@@ -180,14 +181,14 @@ export default function QueueStatus() {
                         isMyBooking
                           ? 'bg-primary/10 border border-primary/30'
                           : isServing
-                          ? 'bg-success/10 border border-success/30'
+                          ? 'bg-green-100 dark:bg-green-900/20 border border-green-500/30'
                           : 'bg-secondary/50'
                       )}
                     >
                       <div
                         className={cn(
                           'w-12 h-12 rounded-xl flex items-center justify-center font-bold',
-                          isServing ? 'bg-success/20 text-success' : 'bg-muted text-muted-foreground'
+                          isServing ? 'bg-green-200 dark:bg-green-900/50 text-green-600' : 'bg-muted text-muted-foreground'
                         )}
                       >
                         <Hash className="h-4 w-4 mr-0.5" />
@@ -196,13 +197,13 @@ export default function QueueStatus() {
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <p className="font-medium">
-                            {SERVICE_CONFIG[item.service_type as ServiceType].name}
+                            {SERVICE_CONFIG[item.service_type as ServiceType]?.name}
                           </p>
                           {isServing && (
-                            <Badge variant="in_progress" className="text-xs">Now Serving</Badge>
+                            <Badge variant="in_progress" className="text-xs">Processing</Badge>
                           )}
                           {isMyBooking && !isServing && (
-                            <Badge variant="confirmed" className="text-xs">You</Badge>
+                            <Badge variant="confirmed" className="text-xs">Your Order</Badge>
                           )}
                         </div>
                         <p className="text-sm text-muted-foreground flex items-center gap-2">
@@ -219,8 +220,8 @@ export default function QueueStatus() {
               </div>
             ) : (
               <div className="text-center py-8">
-                <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">No one in queue yet today</p>
+                <WashingMachine className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">No orders in queue yet today</p>
               </div>
             )}
           </CardContent>
