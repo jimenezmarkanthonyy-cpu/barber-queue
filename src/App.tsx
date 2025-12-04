@@ -47,7 +47,7 @@ const App = () => (
               }
             />
             <Route
-              path="/dashboard/appointments"
+              path="/dashboard/orders"
               element={
                 <ProtectedRoute requiredRole="customer">
                   <MyAppointments />
