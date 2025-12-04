@@ -123,7 +123,7 @@ export function DashboardLayout({ children, variant = 'customer' }: DashboardLay
       </aside>
 
       {/* Mobile Header & Sidebar */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-sidebar/95 backdrop-blur-xl border-b border-sidebar-border">
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-b border-border">
         <div className="flex items-center justify-between p-4">
           <Link to={variant === 'admin' ? '/admin' : '/dashboard'} className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
