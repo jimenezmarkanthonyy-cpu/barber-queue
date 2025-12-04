@@ -160,7 +160,7 @@ export default function QueueManagement() {
     <DashboardLayout variant="admin">
       <div className="p-6 lg:p-8">
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-3xl font-bold gradient-text">Queue Management</h1>
+          <h1 className="text-3xl font-bold text-foreground">Queue Management</h1>
           <p className="text-muted-foreground mt-2">Manage today's orders in real-time</p>
         </div>
 

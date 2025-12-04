@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { format, startOfMonth, endOfMonth } from 'date-fns';
 import { supabase } from '@/integrations/supabase/client';
 import { SERVICE_CONFIG, ServiceType } from '@/lib/constants';
@@ -29,6 +30,8 @@ import {
 const COLORS = ['#06b6d4', '#3b82f6', '#22c55e', '#f59e0b', '#a855f7', '#ef4444', '#ec4899'];
 
 export default function Analytics() {
+  const queryClient = useQueryClient();
+  
   const currentMonth = {
     start: format(startOfMonth(new Date()), 'yyyy-MM-dd'),
     end: format(endOfMonth(new Date()), 'yyyy-MM-dd'),
@@ -49,6 +52,24 @@ export default function Analytics() {
       return data;
     },
   });
+
+  // Real-time subscription
+  useEffect(() => {
+    const channel = supabase
+      .channel('analytics-bookings-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'bookings' },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['analytics-bookings'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
 
   // Calculate metrics
   const totalRevenue = bookings?.reduce((sum, b) => sum + Number(b.total_cost), 0) || 0;
@@ -111,7 +132,7 @@ export default function Analytics() {
     <DashboardLayout variant="admin">
       <div className="p-6 lg:p-8">
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-3xl font-bold gradient-text">Analytics</h1>
+          <h1 className="text-3xl font-bold text-foreground">Analytics</h1>
           <p className="text-muted-foreground mt-2">Business insights for {format(new Date(), 'MMMM yyyy')}</p>
         </div>
 

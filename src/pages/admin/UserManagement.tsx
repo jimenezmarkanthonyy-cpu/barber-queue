@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { supabase } from '@/integrations/supabase/client';
@@ -55,6 +55,24 @@ export default function UserManagement() {
     },
   });
 
+  // Real-time subscription
+  useEffect(() => {
+    const channel = supabase
+      .channel('admin-users-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'profiles' },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
+
   const { data: userBookings } = useQuery({
     queryKey: ['user-bookings', selectedUser],
     queryFn: async () => {
@@ -107,7 +125,7 @@ export default function UserManagement() {
     <DashboardLayout variant="admin">
       <div className="p-6 lg:p-8">
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-3xl font-display font-bold gold-text">User Management</h1>
+          <h1 className="text-3xl font-bold text-foreground">User Management</h1>
           <p className="text-muted-foreground mt-2">Manage customer accounts</p>
         </div>
 
