@@ -91,8 +91,13 @@ export default function BranchManagement() {
   });
 
   const createBranchMutation = useMutation({
-    mutationFn: async (data: z.infer<typeof branchSchema>) => {
-      const { error } = await supabase.from('branches').insert(data);
+    mutationFn: async (data: { name: string; address: string; phone?: string; is_active: boolean }) => {
+      const { error } = await supabase.from('branches').insert([{
+        name: data.name,
+        address: data.address,
+        phone: data.phone || null,
+        is_active: data.is_active,
+      }]);
       if (error) throw error;
     },
     onSuccess: () => {
