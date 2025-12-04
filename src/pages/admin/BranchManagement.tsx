@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
@@ -73,6 +73,24 @@ export default function BranchManagement() {
       return data;
     },
   });
+
+  // Real-time subscription
+  useEffect(() => {
+    const channel = supabase
+      .channel('admin-branches-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'branches' },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['admin-branches'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
 
   const { data: branchBookingCounts } = useQuery({
     queryKey: ['branch-booking-counts'],
@@ -192,7 +210,7 @@ export default function BranchManagement() {
       <div className="p-6 lg:p-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 animate-fade-in">
           <div>
-            <h1 className="text-3xl font-bold gradient-text">Branch Management</h1>
+            <h1 className="text-3xl font-bold text-foreground">Branch Management</h1>
             <p className="text-muted-foreground mt-2">Manage your laundry locations</p>
           </div>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

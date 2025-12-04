@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -36,6 +37,7 @@ const serviceIcons: Record<ServiceType, React.ReactNode> = {
 
 export default function MyAppointments() {
   const { profile } = useAuth();
+  const queryClient = useQueryClient();
 
   const { data: bookings, isLoading } = useQuery({
     queryKey: ['my-bookings', profile?.id],
@@ -55,11 +57,31 @@ export default function MyAppointments() {
     enabled: !!profile?.id,
   });
 
+  // Real-time subscription
+  useEffect(() => {
+    if (!profile?.id) return;
+    
+    const channel = supabase
+      .channel('my-bookings-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'bookings', filter: `user_id=eq.${profile.id}` },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['my-bookings', profile.id] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient, profile?.id]);
+
   return (
     <DashboardLayout variant="customer">
       <div className="p-6 lg:p-8 max-w-4xl mx-auto">
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-3xl font-bold gradient-text">My Orders</h1>
+          <h1 className="text-3xl font-bold text-foreground">My Orders</h1>
           <p className="text-muted-foreground mt-2">Track your laundry orders</p>
         </div>
 

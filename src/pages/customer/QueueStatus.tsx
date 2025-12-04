@@ -76,7 +76,7 @@ export default function QueueStatus() {
     <DashboardLayout variant="customer">
       <div className="p-6 lg:p-8 max-w-4xl mx-auto">
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-3xl font-bold gradient-text">Queue Status</h1>
+          <h1 className="text-3xl font-bold text-foreground">Queue Status</h1>
           <p className="text-muted-foreground mt-2">Real-time order tracking for today</p>
         </div>
 
