@@ -18,6 +18,7 @@ import {
   Clock,
   Hash,
   Zap,
+  WashingMachine,
 } from 'lucide-react';
 
 export default function QueueManagement() {
@@ -159,15 +160,15 @@ export default function QueueManagement() {
     <DashboardLayout variant="admin">
       <div className="p-6 lg:p-8">
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-3xl font-display font-bold gold-text">Queue Management</h1>
-          <p className="text-muted-foreground mt-2">Manage today's queue in real-time</p>
+          <h1 className="text-3xl font-bold gradient-text">Queue Management</h1>
+          <p className="text-muted-foreground mt-2">Manage today's orders in real-time</p>
         </div>
 
         {/* Branch Selector */}
         <Card className="glass-card mb-6 animate-fade-in" style={{ animationDelay: '0.1s' }}>
           <CardContent className="pt-6">
             <Select value={selectedBranch} onValueChange={setSelectedBranch}>
-              <SelectTrigger className="w-full sm:w-64 bg-secondary border-border">
+              <SelectTrigger className="w-full sm:w-64 bg-background border-border">
                 <SelectValue placeholder="Select branch" />
               </SelectTrigger>
               <SelectContent className="bg-popover border-border">
@@ -186,11 +187,11 @@ export default function QueueManagement() {
           <Card className="glass-card animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-success/20 flex items-center justify-center">
-                  <Zap className="h-7 w-7 text-success" />
+                <div className="w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                  <Zap className="h-7 w-7 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Now Serving</p>
+                  <p className="text-sm text-muted-foreground">Now Processing</p>
                   <p className="text-3xl font-bold">
                     {nowServing?.queue_number ? `#${nowServing.queue_number}` : '—'}
                   </p>
@@ -202,7 +203,7 @@ export default function QueueManagement() {
           <Card className="glass-card animate-fade-in" style={{ animationDelay: '0.3s' }}>
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
                   <Users className="h-7 w-7 text-primary" />
                 </div>
                 <div>
@@ -232,17 +233,17 @@ export default function QueueManagement() {
         <Card className="glass-card mb-6 animate-fade-in" style={{ animationDelay: '0.5s' }}>
           <CardHeader>
             <CardTitle>Queue Controls</CardTitle>
-            <CardDescription>Manage the current queue</CardDescription>
+            <CardDescription>Manage the processing queue</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-3">
               <Button
-                variant="gold"
+                variant="gradient"
                 onClick={handleCallNext}
                 disabled={waiting.length === 0 && !nowServing}
               >
                 <Play className="h-4 w-4" />
-                Call Next
+                Process Next
               </Button>
               <Button
                 variant="outline"
@@ -264,24 +265,24 @@ export default function QueueManagement() {
           </CardContent>
         </Card>
 
-        {/* Now Serving */}
+        {/* Now Processing */}
         {nowServing && (
-          <Card className="glass-card border-success/50 mb-6 animate-fade-in" style={{ animationDelay: '0.6s' }}>
+          <Card className="glass-card border-green-500/50 mb-6 animate-fade-in" style={{ animationDelay: '0.6s' }}>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-success">
-                <Zap className="h-5 w-5" />
-                Now Serving
+              <CardTitle className="flex items-center gap-2 text-green-600">
+                <WashingMachine className="h-5 w-5" />
+                Now Processing
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-xl bg-success/20 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-success">#{nowServing.queue_number}</span>
+                <div className="w-16 h-16 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-green-600">#{nowServing.queue_number}</span>
                 </div>
                 <div>
                   <p className="font-semibold text-lg">{nowServing.profile?.full_name}</p>
                   <p className="text-muted-foreground">
-                    {SERVICE_CONFIG[nowServing.service_type as ServiceType].name}
+                    {SERVICE_CONFIG[nowServing.service_type as ServiceType]?.name}
                   </p>
                   <p className="text-sm text-muted-foreground">{nowServing.booking_time}</p>
                 </div>
@@ -294,7 +295,7 @@ export default function QueueManagement() {
         <Card className="glass-card animate-fade-in" style={{ animationDelay: '0.7s' }}>
           <CardHeader>
             <CardTitle>Queue</CardTitle>
-            <CardDescription>{waiting.length} waiting</CardDescription>
+            <CardDescription>{waiting.length} orders waiting</CardDescription>
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -305,7 +306,7 @@ export default function QueueManagement() {
               </div>
             ) : waiting.length > 0 ? (
               <div className="space-y-3">
-                {waiting.map((item, index) => (
+                {waiting.map((item) => (
                   <div
                     key={item.id}
                     className="flex items-center gap-4 p-4 rounded-xl bg-secondary/50"
@@ -320,7 +321,7 @@ export default function QueueManagement() {
                     <div className="flex-1">
                       <p className="font-medium">{item.profile?.full_name}</p>
                       <p className="text-sm text-muted-foreground">
-                        {SERVICE_CONFIG[item.service_type as ServiceType].name} • {item.booking_time}
+                        {SERVICE_CONFIG[item.service_type as ServiceType]?.name} • {item.booking_time}
                       </p>
                     </div>
                     {!item.queue_number && (
@@ -340,8 +341,8 @@ export default function QueueManagement() {
               </div>
             ) : (
               <div className="text-center py-8">
-                <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">No one in queue</p>
+                <WashingMachine className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">No orders in queue</p>
               </div>
             )}
           </CardContent>

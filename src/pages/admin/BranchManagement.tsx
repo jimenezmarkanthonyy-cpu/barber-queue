@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -129,7 +129,7 @@ export default function BranchManagement() {
     mutationFn: async (id: string) => {
       const count = branchBookingCounts?.[id] || 0;
       if (count > 0) {
-        throw new Error('Cannot delete branch with existing bookings');
+        throw new Error('Cannot delete branch with existing orders');
       }
       const { error } = await supabase.from('branches').delete().eq('id', id);
       if (error) throw error;
@@ -192,12 +192,12 @@ export default function BranchManagement() {
       <div className="p-6 lg:p-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 animate-fade-in">
           <div>
-            <h1 className="text-3xl font-display font-bold gold-text">Branch Management</h1>
-            <p className="text-muted-foreground mt-2">Manage your shop locations</p>
+            <h1 className="text-3xl font-bold gradient-text">Branch Management</h1>
+            <p className="text-muted-foreground mt-2">Manage your laundry locations</p>
           </div>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button variant="gold" onClick={() => handleCloseDialog()}>
+              <Button variant="gradient" onClick={() => handleCloseDialog()}>
                 <Plus className="h-4 w-4" />
                 Add Branch
               </Button>
@@ -217,8 +217,8 @@ export default function BranchManagement() {
                       id="name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="e.g., Downtown Branch"
-                      className="bg-secondary border-border"
+                      placeholder="e.g., Downtown Laundry"
+                      className="bg-background border-border"
                     />
                     {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
                   </div>
@@ -229,7 +229,7 @@ export default function BranchManagement() {
                       value={formData.address}
                       onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                       placeholder="Full address"
-                      className="bg-secondary border-border"
+                      className="bg-background border-border"
                     />
                     {errors.address && <p className="text-sm text-destructive">{errors.address}</p>}
                   </div>
@@ -240,7 +240,7 @@ export default function BranchManagement() {
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="(02) 8123-4567"
-                      className="bg-secondary border-border"
+                      className="bg-background border-border"
                     />
                   </div>
                   <div className="flex items-center justify-between">
@@ -256,7 +256,7 @@ export default function BranchManagement() {
                   <Button type="button" variant="outline" onClick={handleCloseDialog}>
                     Cancel
                   </Button>
-                  <Button type="submit" variant="gold" disabled={isPending}>
+                  <Button type="submit" variant="gradient" disabled={isPending}>
                     {isPending ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : editingBranch ? (
@@ -286,40 +286,40 @@ export default function BranchManagement() {
                 className="glass-card animate-fade-in"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <CardHeader className="pb-4">
-                  <div className="flex items-start justify-between">
+                <CardContent className="pt-6">
+                  <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
                         <Building2 className="h-6 w-6 text-primary" />
                       </div>
                       <div>
-                        <CardTitle className="text-lg">{branch.name}</CardTitle>
+                        <h3 className="font-semibold text-lg">{branch.name}</h3>
                         <Badge variant={branch.is_active ? 'success' : 'secondary'}>
                           {branch.is_active ? 'Active' : 'Inactive'}
                         </Badge>
                       </div>
                     </div>
                   </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
-                    <span>{branch.address}</span>
-                  </div>
-                  {branch.phone && (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Phone className="h-4 w-4" />
-                      <span>{branch.phone}</span>
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
+                      <span>{branch.address}</span>
                     </div>
-                  )}
-                  <div className="pt-3 border-t border-border">
+                    {branch.phone && (
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Phone className="h-4 w-4" />
+                        <span>{branch.phone}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="pt-3 border-t border-border mb-4">
                     <p className="text-sm text-muted-foreground">
-                      Total Bookings: <span className="font-semibold text-foreground">
+                      Total Orders: <span className="font-semibold text-foreground">
                         {branchBookingCounts?.[branch.id] || 0}
                       </span>
                     </p>
                   </div>
-                  <div className="flex gap-2 pt-2">
+                  <div className="flex gap-2">
                     <Button
                       variant="outline"
                       size="sm"
@@ -343,7 +343,7 @@ export default function BranchManagement() {
                         <AlertDialogHeader>
                           <AlertDialogTitle>Delete Branch</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Are you sure you want to delete this branch? Branches with existing bookings cannot be deleted.
+                            Are you sure you want to delete this branch? Branches with existing orders cannot be deleted.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>

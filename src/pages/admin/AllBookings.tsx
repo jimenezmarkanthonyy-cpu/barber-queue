@@ -30,7 +30,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Search, Trash2, Loader2 } from 'lucide-react';
+import { Search, Trash2 } from 'lucide-react';
 
 export default function AllBookings() {
   const [search, setSearch] = useState('');
@@ -96,7 +96,7 @@ export default function AllBookings() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-bookings'] });
-      toast({ title: 'Booking deleted successfully' });
+      toast({ title: 'Order deleted successfully' });
     },
     onError: (error: Error) => {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
@@ -115,8 +115,8 @@ export default function AllBookings() {
     <DashboardLayout variant="admin">
       <div className="p-6 lg:p-8">
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-3xl font-display font-bold gold-text">All Bookings</h1>
-          <p className="text-muted-foreground mt-2">Manage all customer bookings</p>
+          <h1 className="text-3xl font-bold gradient-text">All Orders</h1>
+          <p className="text-muted-foreground mt-2">Manage all laundry orders</p>
         </div>
 
         {/* Filters */}
@@ -129,11 +129,11 @@ export default function AllBookings() {
                   placeholder="Search by customer name or email..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="pl-10 bg-secondary border-border"
+                  className="pl-10 bg-background border-border"
                 />
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-full sm:w-48 bg-secondary border-border">
+                <SelectTrigger className="w-full sm:w-48 bg-background border-border">
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
                 <SelectContent className="bg-popover border-border">
@@ -152,7 +152,7 @@ export default function AllBookings() {
         {/* Bookings Table */}
         <Card className="glass-card animate-fade-in" style={{ animationDelay: '0.2s' }}>
           <CardHeader>
-            <CardTitle>Bookings ({filteredBookings?.length || 0})</CardTitle>
+            <CardTitle>Orders ({filteredBookings?.length || 0})</CardTitle>
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -170,7 +170,7 @@ export default function AllBookings() {
                       <TableHead>Branch</TableHead>
                       <TableHead>Service</TableHead>
                       <TableHead>Date/Time</TableHead>
-                      <TableHead>Pax</TableHead>
+                      <TableHead>Qty</TableHead>
                       <TableHead>Cost</TableHead>
                       <TableHead>Queue #</TableHead>
                       <TableHead>Status</TableHead>
@@ -188,7 +188,7 @@ export default function AllBookings() {
                         </TableCell>
                         <TableCell>{booking.branch?.name}</TableCell>
                         <TableCell>
-                          {SERVICE_CONFIG[booking.service_type as ServiceType]?.name}
+                          {SERVICE_CONFIG[booking.service_type as ServiceType]?.name || booking.service_type}
                         </TableCell>
                         <TableCell>
                           <div>
@@ -197,7 +197,7 @@ export default function AllBookings() {
                           </div>
                         </TableCell>
                         <TableCell>{booking.number_of_pax}</TableCell>
-                        <TableCell className="text-success font-semibold">
+                        <TableCell className="text-green-600 font-semibold">
                           ₱{Number(booking.total_cost).toLocaleString()}
                         </TableCell>
                         <TableCell>
@@ -214,7 +214,7 @@ export default function AllBookings() {
                               updateStatusMutation.mutate({ id: booking.id, status: value as BookingStatus })
                             }
                           >
-                            <SelectTrigger className="w-32 h-8 text-xs bg-transparent border-none">
+                            <SelectTrigger className="w-32 h-8 text-xs bg-transparent border-none p-0">
                               <Badge variant={booking.booking_status as BookingStatus}>
                                 {BOOKING_STATUS_CONFIG[booking.booking_status as BookingStatus]?.label}
                               </Badge>
@@ -237,9 +237,9 @@ export default function AllBookings() {
                             </AlertDialogTrigger>
                             <AlertDialogContent className="bg-card border-border">
                               <AlertDialogHeader>
-                                <AlertDialogTitle>Delete Booking</AlertDialogTitle>
+                                <AlertDialogTitle>Delete Order</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  Are you sure you want to delete this booking? This action cannot be undone.
+                                  Are you sure you want to delete this order? This action cannot be undone.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
