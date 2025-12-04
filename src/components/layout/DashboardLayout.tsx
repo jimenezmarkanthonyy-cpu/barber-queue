@@ -59,13 +59,13 @@ export function DashboardLayout({ children, variant = 'customer' }: DashboardLay
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className="p-6 border-b border-sidebar-border">
+      <div className="p-6 border-b border-border">
         <Link to={variant === 'admin' ? '/admin' : '/dashboard'} className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
             <WashingMachine className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h1 className="font-semibold text-lg gradient-text">FreshWash</h1>
+            <h1 className="font-semibold text-lg text-primary">FreshWash</h1>
             <p className="text-xs text-muted-foreground capitalize">{variant} Panel</p>
           </div>
         </Link>
@@ -77,17 +77,17 @@ export function DashboardLayout({ children, variant = 'customer' }: DashboardLay
           {navItems.map((item) => {
             const isActive = location.pathname === item.href;
             return (
-              <Link
-                key={item.href}
-                to={item.href}
-                onClick={() => setMobileOpen(false)}
-                className={cn(
-                  'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group',
-                  isActive
-                    ? 'bg-primary/10 text-primary border border-primary/20'
-                    : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
-                )}
-              >
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group',
+                    isActive
+                      ? 'bg-primary/10 text-primary border border-primary/20'
+                      : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                  )}
+                >
                 <span className={cn(isActive && 'text-primary')}>{item.icon}</span>
                 <span className="font-medium">{item.title}</span>
                 {isActive && <ChevronRight className="h-4 w-4 ml-auto text-primary" />}
@@ -98,8 +98,8 @@ export function DashboardLayout({ children, variant = 'customer' }: DashboardLay
       </ScrollArea>
 
       {/* User Info & Logout */}
-      <div className="p-4 border-t border-sidebar-border space-y-4">
-        <div className="px-4 py-3 rounded-xl bg-sidebar-accent/50">
+      <div className="p-4 border-t border-border space-y-4">
+        <div className="px-4 py-3 rounded-xl bg-secondary/50">
           <p className="text-sm font-medium truncate">{profile?.full_name || 'User'}</p>
           <p className="text-xs text-muted-foreground truncate">{profile?.email}</p>
         </div>
@@ -118,7 +118,7 @@ export function DashboardLayout({ children, variant = 'customer' }: DashboardLay
   return (
     <div className="min-h-screen flex bg-background">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex w-72 flex-col bg-sidebar border-r border-sidebar-border">
+      <aside className="hidden lg:flex w-72 flex-col bg-card border-r border-border">
         <SidebarContent />
       </aside>
 
@@ -126,10 +126,10 @@ export function DashboardLayout({ children, variant = 'customer' }: DashboardLay
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-b border-border">
         <div className="flex items-center justify-between p-4">
           <Link to={variant === 'admin' ? '/admin' : '/dashboard'} className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
               <WashingMachine className="h-4 w-4 text-white" />
             </div>
-            <span className="font-semibold gradient-text">FreshWash</span>
+            <span className="font-semibold text-primary">FreshWash</span>
           </Link>
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
@@ -137,7 +137,7 @@ export function DashboardLayout({ children, variant = 'customer' }: DashboardLay
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-72 p-0 bg-sidebar border-sidebar-border">
+            <SheetContent side="left" className="w-72 p-0 bg-card border-border">
               <SidebarContent />
             </SheetContent>
           </Sheet>
