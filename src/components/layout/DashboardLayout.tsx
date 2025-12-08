@@ -65,7 +65,7 @@ export function DashboardLayout({ children, variant = 'customer' }: DashboardLay
             <WashingMachine className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h1 className="font-semibold text-lg text-primary">FreshWash</h1>
+            <h1 className="font-semibold text-lg text-primary">CleanTone</h1>
             <p className="text-xs text-muted-foreground capitalize">{variant} Panel</p>
           </div>
         </Link>
@@ -129,7 +129,7 @@ export function DashboardLayout({ children, variant = 'customer' }: DashboardLay
             <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
               <WashingMachine className="h-4 w-4 text-white" />
             </div>
-            <span className="font-semibold text-primary">FreshWash</span>
+            <span className="font-semibold text-primary">CleanTone</span>
           </Link>
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
