@@ -112,7 +112,7 @@ export default function Auth() {
     } else {
       toast({
         title: 'Account Created!',
-        description: 'Welcome to FreshWash Laundry.',
+        description: 'Welcome to CleanTone Laundry.',
       });
     }
   };
@@ -133,7 +133,7 @@ export default function Auth() {
             <WashingMachine className="h-8 w-8 text-white" />
           </div>
           <div>
-            <CardTitle className="text-3xl font-bold text-primary">FreshWash</CardTitle>
+            <CardTitle className="text-3xl font-bold text-primary">CleanTone</CardTitle>
             <CardDescription className="text-muted-foreground">
               Professional Laundry Services
             </CardDescription>
