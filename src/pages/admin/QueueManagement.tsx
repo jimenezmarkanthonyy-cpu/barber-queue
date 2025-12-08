@@ -67,10 +67,10 @@ export default function QueueManagement() {
     enabled: !!selectedBranch,
   });
 
-  // Real-time subscription
+  // Real-time subscription for bookings and branches
   useEffect(() => {
-    const channel = supabase
-      .channel('admin-queue-changes')
+    const bookingsChannel = supabase
+      .channel('admin-queue-bookings')
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'bookings' },
@@ -80,8 +80,20 @@ export default function QueueManagement() {
       )
       .subscribe();
 
+    const branchesChannel = supabase
+      .channel('admin-queue-branches')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'branches' },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['branches'] });
+        }
+      )
+      .subscribe();
+
     return () => {
-      supabase.removeChannel(channel);
+      supabase.removeChannel(bookingsChannel);
+      supabase.removeChannel(branchesChannel);
     };
   }, [queryClient]);
 
